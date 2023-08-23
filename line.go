@@ -59,7 +59,7 @@ func parseLine(line string) ([]Token, bool, string, bool, error) {
 	var finalFeats []MorphologicalFeature
 	var err error
 
-	if feats == " " {
+	if feats == "" {
 		finalFeats = []MorphologicalFeature{}
 	} else {
 		finalFeats, err = parseFeats(feats)
