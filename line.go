@@ -57,6 +57,7 @@ func parseLine(line string) ([]Token, bool, string, bool, error) {
 	feats := entries[5]
 	finalFeats, err := parseFeats(feats)
 	if err != nil {
+		fmt.Println(entries)
 		return []Token{}, false, "", false, err
 	}
 	t.Feats = finalFeats
