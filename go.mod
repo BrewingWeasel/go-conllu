@@ -1,3 +1,3 @@
-module github.com/nuvi/go-conllu
+module github.com/brewingweasel/go-conllu
 
 go 1.14
