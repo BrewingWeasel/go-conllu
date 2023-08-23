@@ -59,7 +59,7 @@ func TestParseLine(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		actual, isComment, isSep, err := parseLine(test.input)
+		actual, isComment, _, isSep, err := parseLine(test.input)
 		if test.shouldErr && err != nil {
 			continue
 		}
