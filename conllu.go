@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 // Parse parses conllu data via the io.Reader interface and returns all of the tokens found
@@ -23,11 +24,14 @@ func Parse(r io.Reader) ([]Sentence, error) {
 		if err != nil {
 			done = true
 		}
-		token, isComment, isSep, err := parseLine(line)
+		token, isComment, commentValue, isSep, err := parseLine(line)
 		if err != nil {
 			return nil, fmt.Errorf("error on line %v, err: %v", lineNumber, err)
 		}
 		if isComment {
+			if text, exists := strings.CutPrefix(strings.Trim(commentValue, " "), "text = "); exists {
+				currentSentence.Text = text
+			}
 			continue
 		}
 		if isSep {

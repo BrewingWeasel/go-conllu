@@ -2,7 +2,11 @@ package conllu
 
 // Sentence represents a single sentence of parsed CoNLL-U tokens
 type Sentence struct {
+	// Tokens of the sentence
 	Tokens []Token
+
+	// The original sentence generated from the comment, if it exists
+	Text string
 }
 
 // Token represents a single token, e.g. "hello", "bye"
