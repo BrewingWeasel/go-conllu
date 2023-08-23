@@ -19,7 +19,11 @@ func parseLine(line string) ([]Token, bool, string, bool, error) {
 
 	entries := strings.Split(line, "\t")
 	if len(entries) != 10 {
-		return []Token{}, false, "", false, fmt.Errorf("line %v has incorrect number of entries. expected 10 found %v", entries, len(entries))
+		return []Token{}, false, "", false, fmt.Errorf(
+			"line %v has incorrect number of entries. expected 10 found %v",
+			entries,
+			len(entries),
+		)
 	}
 
 	t := Token{}
@@ -72,7 +76,11 @@ func parseLine(line string) ([]Token, bool, string, bool, error) {
 		deprel = "root"
 	}
 	if t.Head == 0 && deprel != "root" {
-		return []Token{}, false, "", false, fmt.Errorf("DEPREL must match head. deprel: %v, head: %v", deprel, t.Head)
+		return []Token{}, false, "", false, fmt.Errorf(
+			"DEPREL must match head. deprel: %v, head: %v",
+			deprel,
+			t.Head,
+		)
 	}
 	t.Deprel = deprel
 
@@ -96,7 +104,11 @@ func parseLine(line string) ([]Token, bool, string, bool, error) {
 		new := t
 		id, err := strconv.ParseFloat(idString, 64)
 		if err != nil {
-			return []Token{}, false, "", false, fmt.Errorf("ID can't be parsed. id: %v, err: %v", entries[0], err)
+			return []Token{}, false, "", false, fmt.Errorf(
+				"ID can't be parsed. id: %v, err: %v",
+				entries[0],
+				err,
+			)
 		}
 		new.ID = id
 		tokens = append(tokens, new)
@@ -114,6 +126,7 @@ func parseFeats(feats string) ([]MorphologicalFeature, error) {
 	for _, sep := range separated {
 		pieces := strings.Split(sep, "=")
 		if len(pieces) != 2 {
+			fmt.Println(feats, sep, pieces)
 			return nil, fmt.Errorf("Invalid FEAT length. text: %v, len: %v", sep, len(pieces))
 		}
 		finalFeatures = append(finalFeatures, MorphologicalFeature{
