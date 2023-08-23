@@ -55,10 +55,17 @@ func parseLine(line string) ([]Token, bool, string, bool, error) {
 	}
 
 	feats := entries[5]
-	finalFeats, err := parseFeats(feats)
-	if err != nil {
-		fmt.Println(entries)
-		return []Token{}, false, "", false, err
+
+	var finalFeats []MorphologicalFeature
+	var err error
+
+	if feats == " " {
+		finalFeats = []MorphologicalFeature{}
+	} else {
+		finalFeats, err = parseFeats(feats)
+		if err != nil {
+			return []Token{}, false, "", false, err
+		}
 	}
 	t.Feats = finalFeats
 
@@ -127,7 +134,6 @@ func parseFeats(feats string) ([]MorphologicalFeature, error) {
 	for _, sep := range separated {
 		pieces := strings.Split(sep, "=")
 		if len(pieces) != 2 {
-			fmt.Println(feats, sep, pieces)
 			return nil, fmt.Errorf("Invalid FEAT length. text: %v, len: %v", sep, len(pieces))
 		}
 		finalFeatures = append(finalFeatures, MorphologicalFeature{
