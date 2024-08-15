@@ -10,7 +10,8 @@ import (
 
 // Parse parses conllu data via the io.Reader interface and returns all of the tokens found
 // Parse doesn't close the reader when finished, that must be done manually
-func Parse(r io.Reader) ([]Sentence, error) {
+func Parse(r io.Reader) ([]Sentence, []error) {
+	errors := []error{}
 	sentences := []Sentence{}
 	currentSentence := Sentence{
 		Tokens: []Token{},
@@ -26,7 +27,8 @@ func Parse(r io.Reader) ([]Sentence, error) {
 		}
 		token, isComment, commentValue, isSep, err := parseLine(line)
 		if err != nil {
-			return nil, fmt.Errorf("error on line %v, err: %v", lineNumber, err)
+			errors = append(errors, fmt.Errorf("error on line %v, err: %v", lineNumber, err))
+			continue
 		}
 		if isComment {
 			if text, exists := strings.CutPrefix(strings.Trim(commentValue, " "), "text = "); exists {
@@ -46,15 +48,15 @@ func Parse(r io.Reader) ([]Sentence, error) {
 		}
 		currentSentence.Tokens = append(currentSentence.Tokens, token...)
 	}
-	return sentences, nil
+	return sentences, errors
 }
 
 // ParseFile opens, reads, and parses a file in conllu format and returns all of the tokens found.
 // ParseFile is a convencience wrapper for the Parse() function when working with files on disk
-func ParseFile(filepath string) ([]Sentence, error) {
+func ParseFile(filepath string) ([]Sentence, []error) {
 	file, err := os.Open(filepath)
 	if err != nil {
-		return nil, err
+		return nil, []error{err}
 	}
 	defer file.Close()
 	return Parse(file)

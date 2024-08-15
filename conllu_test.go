@@ -3,16 +3,16 @@ package conllu
 import "testing"
 
 func TestParseFile(t *testing.T) {
-	_, err := ParseFile("test_data/en_ewt-ud-train.conllu")
-	if err != nil {
-		t.Error(err)
+	_, errs := ParseFile("test_data/en_ewt-ud-train.conllu")
+	if len(errs) != 0 {
+		t.Error(errs)
 	}
 }
 
 func TestParseFileSmall(t *testing.T) {
-	sentences, err := ParseFile("test_data/en_ewt-ud-train.small.conllu")
-	if err != nil {
-		t.Error(err)
+	sentences, errs := ParseFile("test_data/en_ewt-ud-train.small.conllu")
+	if len(errs) != 0 {
+		t.Error(errs)
 	}
 	expected := 5
 	if len(sentences) != expected {
